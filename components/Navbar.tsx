@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Command } from "lucide-react";
 import { navLinks, profile } from "@/lib/data";
+import { introDelay } from "@/lib/timing";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -49,7 +50,7 @@ export default function Navbar() {
         className="fixed inset-x-0 top-0 z-[70] flex justify-center px-4"
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.7, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.7, delay: introDelay(0.1), ease: [0.16, 1, 0.3, 1] }}
       >
         <motion.nav
           aria-label="Primary"
@@ -57,11 +58,7 @@ export default function Navbar() {
             scrolled ? "py-2 shadow-[0_8px_32px_rgba(3,5,15,0.6)]" : "py-3.5"
           }`}
         >
-          <a
-            href="#home"
-            className="flex items-center gap-2 font-display text-lg font-bold"
-            aria-label="Vishnu R — home"
-          >
+          <a href="#home" className="flex items-center gap-2 font-display text-lg font-bold">
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-neon-blue to-neon-purple text-sm text-white shadow-[0_0_16px_rgba(139,92,246,0.45)]">
               {profile.initials}
             </span>

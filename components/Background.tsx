@@ -29,7 +29,8 @@ export default function Background() {
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.min(70, Math.floor((width * height) / 22000));
+      const cap = width < 768 ? 40 : 70;
+      const count = Math.min(cap, Math.floor((width * height) / 22000));
       particles = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -60,22 +61,36 @@ export default function Background() {
       raf = requestAnimationFrame(draw);
     };
 
-    resize();
-    window.addEventListener("resize", resize);
-    if (reduced) {
-      // static single frame
-      ctx.clearRect(0, 0, width, height);
-      for (const p of particles) {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${p.hue}, 90%, 65%, ${p.a})`;
-        ctx.fill();
+    let idleId = 0;
+    const start = () => {
+      resize();
+      window.addEventListener("resize", resize);
+      run();
+    };
+    const run = () => {
+      if (reduced) {
+        // static single frame
+        ctx.clearRect(0, 0, width, height);
+        for (const p of particles) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `hsla(${p.hue}, 90%, 65%, ${p.a})`;
+          ctx.fill();
+        }
+      } else {
+        raf = requestAnimationFrame(draw);
       }
-    } else {
-      raf = requestAnimationFrame(draw);
-    }
+    };
+
+    // Defer canvas work off the critical path so hydration settles first
+    const hasIdle = typeof window.requestIdleCallback === "function";
+    idleId = hasIdle
+      ? window.requestIdleCallback(start, { timeout: 1500 })
+      : window.setTimeout(start, 300);
 
     return () => {
+      if (hasIdle) window.cancelIdleCallback(idleId);
+      else clearTimeout(idleId);
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
     };
@@ -84,9 +99,9 @@ export default function Background() {
   return (
     <div aria-hidden className="fixed inset-0 z-0 overflow-hidden">
       {/* Aurora blobs */}
-      <div className="absolute -top-[20%] -left-[15%] h-[60vmax] w-[60vmax] rounded-full bg-neon-blue/14 blur-[120px] animate-aurora-a" />
-      <div className="absolute -bottom-[25%] -right-[15%] h-[55vmax] w-[55vmax] rounded-full bg-neon-purple/12 blur-[130px] animate-aurora-b" />
-      <div className="absolute top-[30%] left-[45%] h-[40vmax] w-[40vmax] rounded-full bg-neon-cyan/8 blur-[110px] animate-aurora-c" />
+      <div className="aurora-a absolute -top-[20%] -left-[15%] h-[60vmax] w-[60vmax] rounded-full bg-neon-blue/14 animate-aurora-a" />
+      <div className="aurora-b absolute -bottom-[25%] -right-[15%] h-[55vmax] w-[55vmax] rounded-full bg-neon-purple/12 animate-aurora-b" />
+      <div className="aurora-c absolute top-[30%] left-[45%] h-[40vmax] w-[40vmax] rounded-full bg-neon-cyan/8 animate-aurora-c" />
 
       {/* Grid */}
       <div className="bg-grid absolute inset-0" />

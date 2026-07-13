@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail } from "lucide-react";
 import { profile } from "@/lib/data";
+import { introDelay } from "@/lib/timing";
 
 const socials = [
   { label: "GitHub", href: profile.github, icon: Github },
@@ -18,7 +19,7 @@ export default function SocialDock() {
       className="fixed bottom-0 left-6 z-[60] hidden flex-col items-center gap-1 xl:flex"
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1.8, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ delay: introDelay(0.7), duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
     >
       {socials.map(({ label, href, icon: Icon }) => (
         <a

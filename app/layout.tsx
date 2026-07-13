@@ -1,24 +1,25 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-  display: "swap",
+  display: "optional",
 });
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
-  display: "swap",
+  display: "optional",
 });
 
 const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains",
-  display: "swap",
+  display: "optional",
   weight: ["400", "500"],
+  preload: false, // only styles small code labels — keep it off the critical path
 });
 
 export const metadata: Metadata = {
@@ -51,6 +52,10 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#05070f",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -59,6 +64,13 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrains.variable} noise antialiased`}
       >
+        {/* Pre-paint: skip the intro loader on repeat views this session */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{sessionStorage.getItem('vr-intro-seen')&&document.documentElement.classList.add('intro-seen')}catch(e){}",
+          }}
+        />
         {children}
       </body>
     </html>

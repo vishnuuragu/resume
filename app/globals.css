@@ -164,6 +164,60 @@ body {
   -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 30%, transparent 75%);
 }
 
+/* ── Intro choreography (pure CSS so first paint doesn't wait for JS) ──
+   A pre-paint inline script adds .intro-seen to <html> on repeat views
+   in the same session, which skips the loader and shortens delays. */
+
+.loader-overlay {
+  pointer-events: none;
+  animation: loader-hide 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both;
+}
+@keyframes loader-hide {
+  from { opacity: 1; }
+  to { opacity: 0; visibility: hidden; }
+}
+.loader-pop {
+  animation: loader-pop 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes loader-pop {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: none; }
+}
+.loader-fill {
+  transform: translateX(-100%);
+  animation: loader-fill 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.05s forwards;
+}
+@keyframes loader-fill {
+  to { transform: translateX(0); }
+}
+:root.intro-seen .loader-overlay { display: none; }
+
+/* Entrance for hero text: set stagger via --io (offset) per element.
+   Transform-only (no opacity) so the text paints immediately for LCP —
+   the loader overlay covers the pre-animation state on first view. */
+.intro-rise {
+  animation: intro-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(1.05s + var(--io, 0s));
+}
+@keyframes intro-rise {
+  from { transform: translateY(26px); }
+  to { transform: none; }
+}
+:root.intro-seen .intro-rise {
+  animation-delay: calc(0.05s + var(--io, 0s) / 2);
+}
+
+/* Aurora blobs — blur radius lives here so mobile can cheapen it */
+.aurora-a { filter: blur(120px); }
+.aurora-b { filter: blur(130px); }
+.aurora-c { filter: blur(110px); }
+
+@media (max-width: 767px) {
+  .aurora-a,
+  .aurora-b { filter: blur(70px); }
+  .aurora-c { display: none; }
+}
+
 /* Marquee pause on hover */
 .marquee-track:hover .marquee-inner {
   animation-play-state: paused;
@@ -176,6 +230,7 @@ body {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }

@@ -15,6 +15,10 @@ export const profile = {
   resumeUrl: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/resume.pdf`,
   github: "https://github.com/vishnuuragu",
   linkedin: "https://www.linkedin.com/in/vishnuuragu", // TODO: confirm handle
+  // Free access key from https://web3forms.com (enter your email, key arrives
+  // instantly). Safe to commit — it's designed for client-side forms.
+  // Leave empty to fall back to opening the visitor's email client.
+  web3formsKey: "",
 };
 
 export const typingRoles = [

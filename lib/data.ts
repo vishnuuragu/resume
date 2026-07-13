@@ -18,7 +18,7 @@ export const profile = {
   // Free access key from https://web3forms.com (enter your email, key arrives
   // instantly). Safe to commit — it's designed for client-side forms.
   // Leave empty to fall back to opening the visitor's email client.
-  web3formsKey: "",
+  web3formsKey: "de7f8ca1-48ee-4b2e-ba01-250e30d622e2",
 };
 
 export const typingRoles = [

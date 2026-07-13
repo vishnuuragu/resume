@@ -18,8 +18,11 @@ All portfolio content lives in **`lib/data.ts`** — profile info, skills, proje
 
 Things to personalize:
 
-- [ ] `lib/data.ts` → `profile.github` / `profile.linkedin` — set your real handles
-- [ ] `public/resume.pdf` — drop your resume PDF here (Download Resume button links to it)
+- [x] `public/resume.pdf` — done
+- [x] `lib/data.ts` → `web3formsKey` — done (contact form live)
+- [ ] `lib/data.ts` → `goatcounter` — free analytics: sign up at goatcounter.com, paste your site code
+- [ ] `lib/data.ts` → confirm `profile.linkedin` handle
+- [ ] `lib/data.ts` → per-project `github` / `demo` URLs (buttons fall back to profile/contact until set)
 - [ ] `components/sections/About.tsx` — swap the "VR" monogram circle for a photo if you like
 
 ## Features

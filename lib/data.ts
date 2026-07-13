@@ -4,6 +4,8 @@
 export const profile = {
   name: "Vishnu R",
   initials: "VR",
+  // Canonical site URL (no trailing slash) — used for OG tags, sitemap, JSON-LD
+  siteUrl: "https://vishnuuragu.github.io/resume",
   title: "Full Stack Developer • AI Engineer • Backend Developer",
   subtitle:
     "Building intelligent software, AI agents, scalable backend systems, and cloud infrastructure.",
@@ -19,6 +21,10 @@ export const profile = {
   // instantly). Safe to commit — it's designed for client-side forms.
   // Leave empty to fall back to opening the visitor's email client.
   web3formsKey: "de7f8ca1-48ee-4b2e-ba01-250e30d622e2",
+  // GoatCounter site code for free, cookie-less analytics. Sign up at
+  // https://www.goatcounter.com, pick a code (e.g. "vishnuuragu"), paste it
+  // here. Leave empty to disable analytics entirely.
+  goatcounter: "",
 };
 
 export const typingRoles = [
